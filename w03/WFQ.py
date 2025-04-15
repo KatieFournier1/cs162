@@ -4,45 +4,106 @@
 # WFQ
 
 
-class Queue:
-    def __init__(self, letter, weight):
-        self.letter = letter
-        self.weight = weight
-        self.queue = []
+class WFQueue:
+    """A weighted fair queue. Packets in the queue have a priority, or weight,
+    with packets dequeued starting at the highest weight, dequeueing a number
+    of packets at that weight equal to the weight, then moving down the packet
+    weights and repeating the process.
 
-    def pop(self, i = 0):
-        return self.queue.pop(i)
+    E.g., starting at, say, a max weight of 5, 5 weight 5 packets are dequeued
+    before then dequeueing 4 weight 4 packets, then 3 weight 3 packets, and
+    so on. After finally dequeueing 1 weight 1 packet, the entire process is
+    repeated starting back at weight 5."""
 
-    def append(self, other):
-        self.queue.append(other)
+    def __init__(self):
+        self.__queues = [[]]
+        self.__ptr = self.Pointer()
 
-    def __iadd__(self, other):
-        self.append(other)
+    class Pointer:
+        """Stores the current location in the weighted dequeueing order."""
+
+        def __init__(self):
+            self.wgt = 0
+            self.i = 0
+            self.max_wgt = 0
+
+        def reset(self):
+            self.wgt = self.max_wgt
+            self.i = self.max_wgt
+
+        def lower(self):
+            if self.wgt > 1:
+                self.wgt -= 1
+                self.i = self.wgt
+            else:
+                self.reset()
+
+        def step(self):
+            if self.i > 1:
+                self.i -= 1
+            else:
+                self.lower()
+
+
+    def pop(self):
+        """Removes the packet at the front of the queue and returns it."""
+
+        errEOB = 'queue is empty'
+        if len(self.__queues) == 0:
+            raise OutOfBoundsError(errEOB)
+
+        # If we haven't dequeued anything yet (ptr.wgt can only be 0 at init)
+        if self.__ptr.wgt == 0:
+            # Loop back to the highest priority
+            self.__ptr.reset()
+        # Find the highest priority non-empty queue
+        while len(self.__queues[self.__ptr.wgt - 1]) == 0:
+            if self.__ptr.wgt > 1:
+                self.__ptr.lower()
+            else:
+                # If we're here all queues must be empty
+                raise OutOfBoundsError(errEOB)
+
+        # Dequeue and move the pointer
+        packet = self.__queues[self.__ptr.wgt - 1].pop(0)
+        self.__ptr.step()
+        return packet
+
+    def append(self, packet, weight):
+        """Add a weighted packet to the end of the queue."""
+
+        while len(self.__queues) < weight:
+            self.__queues.append([])
+        self.__queues[weight - 1].append(packet)
+        self.__ptr.max_wgt = max(self.__ptr.max_wgt, weight)
 
     def __len__(self):
-        return len(self.queue)
+        total = 0
+        for q in self.__queues:
+            total += len(q)
+        return total
 
 
-def __main__():
+def main():
+    """Populate a weighted fair queue (WFQ) from a file containing packet data
+    then dequeue the packets in order, with higher weighted packets dequeueing
+    more often."""
 
-    queues = [Queue('p', 3), Queue('s', 2), Queue('e', 1)]
-
-    # Populate the weighted Queues from a file
+    queue = WFQueue()
+    # Premium, Standard, Economy
+    weights = {'P': 3, 'S': 2, 'E': 1}
+    # Populate the weighted Queue from a file
     for line in open('input queue-1.txt'):
-        for q in queues:
-            if q.letter == line[0].lower():
-                q += line[2:].strip()
-                break
+        data = line[2:].strip()
+        weight = weights[line[0]]
+        queue.append(data, weight)
+
+    # Pop packets from the queue until the queue is empty
+    while len(queue) > 0:
+        print(queue.pop())
 
 
-    # Pop items from the queues
-    # Stop when all the queues are empty
-    popped = 0
-    while popped > 0:
-        popped = 0
-        for q in queues:
-            # Weight determines how many items to pop consecutively
-            for _ in range(min(q.weight, len(q))):
-                print(q.pop(0))
-                popped += 1
+if __name__ == '__main__':
+    main()
+
 
