@@ -12,17 +12,25 @@ class City:
         self.name = name
         self.neighbors = {}
 
-    def add_neighbor(self, other_city, weight):
-        self.neighbors[other_city] = weight
+    def add_neighbor(self, other_city, travel_cost):
+        self.neighbors[other_city] = travel_cost
         if self not in other_city.neighbors:
-            other_city.neighbors[self] = weight
+            other_city.neighbors[self] = travel_cost
 
+class Map:
+
+
+class Route:
+    def __init__(self, starting_city: City):
+        self.cities = [starting_city]
+        self.cost = 0
 
 def main():
-    paths = [(neighbor, neighbors[neighbor]) in neighbors]
-    for path in paths:
-        # TODO: implement
-        pass
+    city_names = ['Bend', 'Medford', 'K Falls', 'Reno', 'S.F']
+    cities = {City(city_name) for city_name in city_names}
+
+
+
 
 
 if __name__ == '__main__':
