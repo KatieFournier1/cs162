@@ -48,9 +48,9 @@ class WFQueue:
     def pop(self):
         """Removes the packet at the front of the queue and returns it."""
 
-        errEOB = 'queue is empty'
+        errOOB = 'queue is empty'
         if len(self.__queues) == 0:
-            raise OutOfBoundsError(errEOB)
+            raise OutOfBoundsError(errOOB)
 
         # If we haven't dequeued anything yet (ptr.wgt can only be 0 at init)
         if self.__ptr.wgt == 0:
@@ -62,7 +62,7 @@ class WFQueue:
                 self.__ptr.lower()
             else:
                 # If we're here all queues must be empty
-                raise OutOfBoundsError(errEOB)
+                raise OutOfBoundsError(errOOB)
 
         # Dequeue and move the pointer
         packet = self.__queues[self.__ptr.wgt - 1].pop(0)
