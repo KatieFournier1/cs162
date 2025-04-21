@@ -52,9 +52,6 @@ def find_routes(current_city: City,
     return routes
 
 
-def city_list_str(city_list):
-        return ', '.join(map(lambda city: city.name, city_list))
-
 def main():
     city_names = ['Bend', 'Medford', 'Klamath Falls', 'Reno', 'San Francisco']
     travel_costs = [[0,  50,  40,  0,   0  ],
