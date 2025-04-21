@@ -72,7 +72,6 @@ def main():
             lowest_cost = route_cost
             cheapest_route = route
         print(f"{route['cities']}, Cost = {route['cost']}")
-        # print(route)
     print((f"\nCHEAPEST:\n"
            f"Route taken: {', '.join(map(lambda city: city.name, route['cities']))}\n"
            f"Total travel cost: {lowest_cost}"))
