@@ -3,6 +3,11 @@
 # Week 03
 # Arrays
 
+# Git repository: https://github.com/KatieFournier1/cs162/tree/main/week03-arrays-queues
+# (I made the Git repos from previous weeks specific for those weeks, not
+# knowing we were going to reuse them later. I've invited you as a collaborator.)
+
+
 import numpy as np
 
 array_size = 5
