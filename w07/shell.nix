@@ -5,5 +5,8 @@ in nixpkgs.mkShell {
     (nixpkgs.python313Full.withPackages (pypkgs: with pypkgs; [
     ]))
   ];
-  shellHook = "fish; exit";
+  shellHook = ''
+    fish --init-command="eval #(ssh-agent-c); ssh-add ~/.ssh/github"
+    exit
+  '';
 }
