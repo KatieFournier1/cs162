@@ -2,10 +2,8 @@
 # Katie Fournier
 
 
-# cargo = [9, 7, 3, 4, 5]
-# cargo = [1, 2, 13, 12]
-# cargo = [7, 6, 5, 4, 3, 2, 1]
-cargo = [1, 2, 3, 4, 5, 6, 7]
+cargo = [9, 7, 3, 4, 5]
+cargo.sort(reverse=True)
 print (cargo, "has a sum of" , sum(cargo))
 truck1 = []
 truck2 = []
