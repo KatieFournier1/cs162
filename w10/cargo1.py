@@ -5,8 +5,6 @@
 from copy import copy
 import random
 
-print(random.randint(1,28))
-
 def load_trucks(cargo, truck1, truck2):
     if len(cargo) == 0:
         return (truck1, truck2)
@@ -25,6 +23,7 @@ def main():
         crate = random.randint(1, 28)
         cargo.append(crate)
     print (cargo, sum(cargo))
+
     cargo.sort(reverse=True)
     truck1, truck2 = load_trucks(cargo, [], [])
     for truck in [truck1, truck2]:
