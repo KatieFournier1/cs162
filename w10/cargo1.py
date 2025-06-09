@@ -40,7 +40,7 @@ def main():
             total_weight = 0
 
     # Make sure that the the sum of the capacity of the two trucks is equal to
-    # the total weight, even or odd.
+    # the total weight, even or odd. 
     max_crate_weight = ceil(total_weight / 2)
     truck1_max = max_crate_weight
     # truck2_max is either equal to truck1_max if total_weight is even, or it's
